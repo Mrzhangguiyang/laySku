@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>laySku</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="layui/layui/css/layui.css" />
+	</head>
+	<body>
+		
+		<div class="layui-form" id="SKU_TYPE"></div>
+		<div id="skuTable"></div>
+		<div class="layui-form-item">
+		    <div class="layui-input-block">
+		      <button id="skuSubmit" type="submit" class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+		    </div>
+		</div>
+	</body>
+	<script src="layui/layui/layui.js"></script>
+	<script>
+		layui.config({
+			base: 'js/' //静态资源所在路径
+		}).extend({
+			server: 'server',
+			laySku: 'laySku'
+		}).use(['server','laySku'],function(exports) {
+			var server = layui.server,
+				table = layui.table,
+				form = layui.form,
+				laySku = layui.laySku,
+				$ = layui.$;
+			var sku = new laySku({
+				id:'SKU_TYPE',//checkbox选择框
+				container_id:'skuTable',//容器id渲染table
+				data:server.data,//数据类型
+				rowReturn:true,//是否绑定tr单击事件
+				rowMaster:function(res){//绑定tr单击事件执行的操作
+					console.log(res)
+				},
+				btn:'skuSubmit',//按钮提交
+				skuSubmitBind:function(res){//提交之后的某些操作
+					console.log(res)
+				},
+				uploadSrc:'https://httpbin.org/post',//图片上传接口
+				uploadBefore:function(obj,elem){//上传之前的操作
+					obj.preview(function(index, file, result){
+						elem.append('<img style="width:38px;height:38px;object-fit:cover;" src="http://xxh2019.oss-cn-beijing.aliyuncs.com/hmyp/JULoX1578887334705.jpg">')
+					});
+				},
+				uploadDone:function(){//上传图片成功的操作
+					
+				},
+				uploadError:function(){//上传图片失败的操作
+					
+				}
+			})
+			sku.init()
+		})
+	</script>
+</html>
